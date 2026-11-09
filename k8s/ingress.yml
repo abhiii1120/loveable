@@ -8,16 +8,26 @@ spec:
   ingressClassName: nginx
   rules:
 
-  - host: "*.localhost"
+  - host: "*.preview.localhost"
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
-            service: 
-              name:  project-service
-              port:
-                number: 80
+          service:
+            name: project-service
+            port:
+              number: 80
+  - host: "*.file-system.localhost"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: project-service
+            port:
+              number: 80
   - http:
       paths:
       - pathType: Prefix
