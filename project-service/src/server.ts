@@ -1,6 +1,10 @@
 import { createApp } from "./app/app.js";
+import { configDotenv } from "dotenv";
+configDotenv();
+import { startIdleReaper } from "./service/activity.service.js";
 
 let app = createApp();
+await startIdleReaper();
 
 async function startServer(){
 
