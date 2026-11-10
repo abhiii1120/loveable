@@ -2,6 +2,7 @@ import express, { type NextFunction, type Request, type Response } from "express
 import morgan from "morgan";
 import router from "../routes/index.routes.js";
 import {createProxyMiddleware} from 'http-proxy-middleware';
+import { onPreviewReaped, recordActivity } from "../service/activity.service.js";
 
 export function createApp() {
   let app = express();
@@ -10,8 +11,20 @@ export function createApp() {
   app.use(express.urlencoded({ extended: true }));
   app.use(morgan("dev"));
 
+  /** Cached proxy middleware per preview id, keyed by `uniqueId`. */
   const proxyMap : {[key:string]:Function} = {}
 
+  // A reaped preview's service no longer exists, so its cached proxy must go to.
+  onPreviewReaped((uniqueId) => {
+    delete proxyMap[uniqueId]
+  })
+
+  /**
+   * Returns the proxy that forwards to a preview's kubernetes service, creating
+   * and caching it on first use.
+   * 
+   * @param uniqueId Preview id taken from the request subdomain.
+   */
   function getProxy(uniqueId:string){
 
     if(proxyMap[uniqueId]){
@@ -33,6 +46,14 @@ export function createApp() {
     return proxyMiddleware
   }
 
+  /**
+   * Routes preview traffic to its pod.
+   * 
+   * Request on a `*.preview.*` host are proxied to the matching kubernetes service.
+   * Every such request also refreshes the preview's Redis activity key,
+   * which is what keeps the idle reaper from tearing the pod down. Any other host
+   * falls through to the regular API routes.
+   */
   app.use((req:Request,res:Response,next:NextFunction) => {
 
     // xyz.localhost
@@ -46,10 +67,6 @@ export function createApp() {
 
     const subdomain = host.split(".")
 
-    if(!subdomain[1]){
-      return next()
-    }
-
     const uniqueId = subdomain[0];
 
     if(!uniqueId){
@@ -58,6 +75,7 @@ export function createApp() {
       })
     }
 
+    void recordActivity(uniqueId);
     return getProxy(uniqueId)(req,res,next);
   })
 
