@@ -1,6 +1,8 @@
 import {Redis} from "ioredis";
+import dotenv from 'dotenv';
+dotenv.config();
 
-const REDIS_URL = process.env.REDIS_URL || "redis://default:rFgtIZJrZeZ0SZCKkNeSVuwfxCwT1b0d@calico-waterlily-indubitable-96511.db.redis.io:11947";
+const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 
 /**
  * Command connection used for reads,writes and publishing.
