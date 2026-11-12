@@ -5,7 +5,7 @@ kc.loadFromDefault();
 
 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
-export async function createPod(podName:string){
+export async function createPod(podName:string, projectId:string){
     const podManifest = {
         apiVersion:'v1',
         kind:'Pod',
@@ -87,6 +87,16 @@ export async function createPod(podName:string){
                     ]
 
                 },
+                {
+                    name:'sync-container',
+                    image:'sync-service',
+                    env:[
+                        {
+                            name:'PROJECT_ID',
+                            value:projectId
+                        }
+                    ]
+                }
             ]
         }
     }
