@@ -1,6 +1,6 @@
 import path from "node:path";
 
-export const PORT = Number(process.env.PORT ?? 8000);
+export const PORT = Number(process.env.PORT ?? 8080);
 
 export const WORK_FOLDER = path.resolve(process.env.WORK_FOLDER ?? "/app");
 

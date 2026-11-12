@@ -16,6 +16,25 @@ export async function createPod(podName:string){
             }
         },
         spec:{
+            volumes:[
+                {
+                    name:'app-volume',
+                    emptyDir:{}
+                }
+            ],
+            initContainers:[
+                {
+                    name:'init-container',
+                    image:'nextjs-boilerplate',
+                    command: ['sh', '-c', 'mkdir -p /app-copy && cp -r /app/* /app-copy'],
+                    volumeMounts:[
+                        {
+                            name:'app-volume',
+                            mountPath:'/app-copy',
+                        }
+                    ]
+                }
+            ],
             containers:[
                 {
                     name:'nextjs-container',
@@ -34,8 +53,40 @@ export async function createPod(podName:string){
                             memory:'2048Mi',
                             cpu:'1000m'
                         }
-                    }
-                }
+                    },
+                    volumeMounts:[
+                        {
+                            name:'app-volume',
+                            mountPath:'/app',
+                        }
+                    ]
+                },
+                {
+                    name:'file-server-container',
+                    image:'express-file-server',
+                    ports:[
+                        {
+                            containerPort:8080
+                        }
+                    ],
+                    resources:{
+                        requests:{
+                            memory:'512Mi',
+                            cpu:'250m'
+                        },
+                        limits:{
+                            memory:'1024Mi',
+                            cpu:'500m',
+                        }
+                    },
+                    volumeMounts:[
+                        {
+                            name:'app-volume',
+                            mountPath:'/app'
+                        }
+                    ]
+
+                },
             ]
         }
     }
@@ -66,9 +117,16 @@ export async function createService(serviceName:string,podName:string){
             },
             ports:[
                 {
+                    name:"preview-port",
                     protocol:'TCP',
                     port:80,
                     targetPort:3000
+                },
+                {
+                    name:'file-server-port',
+                    protocol:'TCP',
+                    port:8000,
+                    targetPort:8080
                 }
             ],
             type:'LoadBalancer'
