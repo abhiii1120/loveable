@@ -1,6 +1,7 @@
 import app from "./app/app.js";
+import { PORT,WORK_FOLDER } from "./config/env.js";
 
-app.listen(3000,() => {
-    console.log(`file-server listening on port 3000`);
+app.listen(PORT,() => {
+    console.log(`file-server listening on port ${PORT} work folder ${WORK_FOLDER}`);
 })
 

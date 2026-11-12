@@ -13,7 +13,8 @@ export function createApp() {
 
   /** Cached proxy middleware per preview id, keyed by `uniqueId`. */
   const proxyMap : {[key:string]:Function} = {}
-
+  const proxyMapForFiles : {[key:string]:Function} = {}
+  
   // A reaped preview's service no longer exists, so its cached proxy must go to.
   onPreviewReaped((uniqueId) => {
     delete proxyMap[uniqueId]
@@ -46,6 +47,27 @@ export function createApp() {
     return proxyMiddleware
   }
 
+    function getProxyForFiles(uniqueId:string){
+
+    if(proxyMapForFiles[uniqueId]){
+      return proxyMapForFiles[uniqueId];
+    }
+
+    const targetUrl = `http://nextjs-service-${uniqueId}:8000`
+
+    const proxyMiddleware = createProxyMiddleware({
+      target:targetUrl,
+      changeOrigin:true,
+      pathRewrite:{
+        '^/':'/'
+      }
+    })
+
+    proxyMapForFiles[uniqueId] = proxyMiddleware
+
+    return proxyMiddleware
+  }
+
   /**
    * Routes preview traffic to its pod.
    * 
@@ -61,7 +83,7 @@ export function createApp() {
 
     console.log("host: ",host)
 
-    if(!host.includes("preview")){
+    if(!host.includes("preview") && !host.includes("file-system")){
       return next()
     }
 
@@ -74,8 +96,12 @@ export function createApp() {
         message:"Invalid preview URL",
       })
     }
-
     void recordActivity(uniqueId);
+
+    if(host.includes("file-system")){
+      recordActivity(uniqueId)
+      return getProxyForFiles(uniqueId)(req,res,next);
+    }
     return getProxy(uniqueId)(req,res,next);
   })
 
