@@ -3,6 +3,7 @@ import morgan from "morgan";
 import router from "../routes/index.routes.js";
 import {createProxyMiddleware} from 'http-proxy-middleware';
 import { onPreviewReaped, recordActivity } from "../service/activity.service.js";
+import { errorHandler } from "../middlewares/error.middleware.js";
 
 export function createApp() {
   let app = express();
@@ -18,6 +19,7 @@ export function createApp() {
   // A reaped preview's service no longer exists, so its cached proxy must go to.
   onPreviewReaped((uniqueId) => {
     delete proxyMap[uniqueId]
+    delete proxyMapForFiles[uniqueId]
   })
 
   /**
@@ -118,6 +120,8 @@ export function createApp() {
       message: "Server is Healthy",
     });
   });
+
+  app.use(errorHandler)
 
   return app;
 }
