@@ -94,6 +94,40 @@ export async function createPod(podName:string, projectId:string){
                         {
                             name:'PROJECT_ID',
                             value:projectId
+                        },
+                        {
+                            name:"AWS_ACCESS_KEY_ID",
+                            valuefrom:{
+                                secretKeyRef:{
+                                    name:"aws",
+                                    key:"AWS_ACCESS_KEY_ID"
+                                }
+                            }
+                        },
+                        {
+                            name:"AWS_SECRET_ACCESS_KEY",
+                            valuefrom:{
+                                secretKeyRef:{
+                                    name:"aws",
+                                    key:"AWS_SECRET_ACCESS_KEY"
+                                }
+                            }
+                        }
+                    ],
+                    resources:{
+                        requests:{
+                            memory:'256Mi',
+                            cpu:'100m'
+                        },
+                        limits:{
+                            memory:'512Mi',
+                            cpu:'300m',
+                        }
+                    },
+                    volumeMounts:[
+                        {
+                            name:'app-volume',
+                            mountPath:"/app"
                         }
                     ]
                 }
