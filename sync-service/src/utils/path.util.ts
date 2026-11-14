@@ -31,6 +31,26 @@ export function isIgnored(relativePath:string):boolean {
     const filename = segments[segments.length -1] ?? "";
 
     return (
-        segments.slice(0,-1).some((segment) => IGNORED_DIRS.has(segment))
-    )
+        segments.slice(0,-1).some((segment) => IGNORED_DIRS.has(segment)) ||
+        IGNORED_DIRS.has(filename) ||
+        IGNORED_FILES.has(filename) 
+    );
+}
+
+export async function runWithConcurrency<T>(
+    items: T[],
+    limit:number,
+    worker:(item:T) => Promise<void>,
+):Promise<void> {
+    let cursor = 0;
+
+    const runners = Array.from({length: Math.min(limit,items.length)},async () => {
+        while(cursor < items.length){
+            const item = items[cursor++];
+            if(item === undefined) return;
+            await worker(item);
+        }
+    });
+
+    await Promise.all(runners)
 }
