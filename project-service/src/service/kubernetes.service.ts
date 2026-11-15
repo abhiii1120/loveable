@@ -97,7 +97,7 @@ export async function createPod(podName:string, projectId:string){
                         },
                         {
                             name:"AWS_ACCESS_KEY_ID",
-                            valuefrom:{
+                            valueFrom:{
                                 secretKeyRef:{
                                     name:"aws",
                                     key:"AWS_ACCESS_KEY_ID"
@@ -106,7 +106,7 @@ export async function createPod(podName:string, projectId:string){
                         },
                         {
                             name:"AWS_SECRET_ACCESS_KEY",
-                            valuefrom:{
+                            valueFrom:{
                                 secretKeyRef:{
                                     name:"aws",
                                     key:"AWS_SECRET_ACCESS_KEY"

@@ -10,7 +10,7 @@ export const PROJECT_ID = required("PROJECT_ID");
 
 export const WORK_FOLDER = path.resolve(process.env.WORK_FOLDER ?? "/app");
 
-export const S3_BUCKET = process.env.S3_BUCKET ?? "pineapple";
+export const S3_BUCKET = process.env.S3_BUCKET ?? "loveable-sync-bucket";
 export const S3_REGION = process.env.S3_REGION ?? "ap-southeast-2";
 export const S3_PREFIX = `projects/${PROJECT_ID}`;
 

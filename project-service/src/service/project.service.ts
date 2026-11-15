@@ -57,13 +57,14 @@ export async function launchProject(projectId: string, userId: string) {
   const serviceName = `nextjs-service-${runtimeId}`;
 
   try {
+    
     await createPod(podName, project.id);
     await createService(serviceName, podName);
     await recordActivity(runtimeId);
 
     project.status = "running";
     project.runtimeId = runtimeId;
-    project.previewUrl = `htpp://${runtimeId}.preview.localhost`;
+    project.previewUrl = `http://${runtimeId}.preview.localhost`;
     await project.save();
     
     return project;
