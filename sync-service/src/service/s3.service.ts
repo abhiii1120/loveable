@@ -12,7 +12,7 @@ import {
   isIgnored,
   toAbsolutePath,
   toObjectKey,
-  toRelativePath,
+  toRelativeFromKey,
 } from "../utils/path.util.js";
 import path from "node:path";
 
@@ -32,7 +32,7 @@ export async function listRemoteFiles(): Promise<string[]> {
 
     for (const object of response.Contents ?? []) {
       if (!object.Key || object.Key.endsWith("/")) continue;
-      keys.push(toRelativePath(object.Key));
+      keys.push(toRelativeFromKey(object.Key));
     }
 
     continuationToken = response.IsTruncated
