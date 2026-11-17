@@ -1,24 +1,27 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
-function requiredEnv(name: "MONGODB_URI" | "ACCESS_TOKEN_SECRET"){  
-    const value = process.env[name]
+function requiredEnv(
+  name: "MONGODB_URI" | "ACCESS_TOKEN_SECRET" | "MESSAGE_BROKER_URL",
+) {
+  const value = process.env[name];
 
-    if(!value?.trim()){
-        throw new Error(`Missing required environment variable: ${name}`)
-    }
+  if (!value?.trim()) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
 
-    return value
+  return value;
 }
 
-const port = Number.parseInt(process.env.PORT ?? "3000",10)
+const port = Number.parseInt(process.env.PORT ?? "3000", 10);
 
-if(!Number.isInteger(port) || port <= 0){
-    throw new Error("Port must be a positive number");
+if (!Number.isInteger(port) || port <= 0) {
+  throw new Error("Port must be a positive number");
 }
 
 export const env = {
-    PORT:port,
-    MONGODB_URI:requiredEnv("MONGODB_URI"),
-    ACCESS_TOKEN_SECRET:requiredEnv("ACCESS_TOKEN_SECRET")
-}
+  PORT: port,
+  MONGODB_URI: requiredEnv("MONGODB_URI"),
+  ACCESS_TOKEN_SECRET: requiredEnv("ACCESS_TOKEN_SECRET"),
+  MESSAGE_BROKER_URL: requiredEnv("MESSAGE_BROKER_URL"),
+};

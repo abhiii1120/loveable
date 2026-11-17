@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { AppError } from "../middlewares/error.middleware.js";
 import { createProject, launchProject } from "../service/project.service.js";
+import { publishMessage } from "../service/broker.service.js";
 
 export async function createProjectController(
   req: Request,
@@ -16,6 +17,10 @@ export async function createProjectController(
     }
 
     const project = await createProject(req.user!.id, title);
+    await publishMessage(
+      "project_created",
+      JSON.stringify({ projectId: project.id, userId: req.user!.id }),
+    );
     res.status(201).json({ project });
   } catch (error) {
     next(error);
