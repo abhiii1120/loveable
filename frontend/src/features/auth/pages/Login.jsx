@@ -17,15 +17,26 @@ const item = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut"},
+    transition: { duration: 0.5, ease: "easeOut" },
   },
+};
+
+const AuthLayoutData = {
+  leftSectionMainText: "Turn your ideas into reality.",
+  leftSectionSubText:
+    "Describe what you want to build. Let AL handle the complexity while you focus on bringing your vision to life.",
+  cardArr: [
+    { text: "Authentication", selected: true },
+    { text: "Chat your brief with AI", selected: false },
+    { text: "Start building", selected: false },
+  ],
 };
 
 const Login = () => {
   let { errors, handleSubmit, onLoginSubmit, register, navigate } = useAuth();
 
   return (
-    <AuthLayout>
+    <AuthLayout data={AuthLayoutData}>
       <div className="h-full w-full p-12 flex flex-col gap-4 items-center justify-center">
         <motion.form
           variants={container}
@@ -34,10 +45,10 @@ const Login = () => {
           onSubmit={handleSubmit(onLoginSubmit)}
           className="flex flex-col gap-6 max-w-120"
         >
-          <motion.div variants={item} className="flex flex-col gap-2 max-w-3/5">
-            <h1 className="text-heading text-3xl">Start a project</h1>
-            <p className="text-subtle text-sm">
-              Tell us what you're building. We usually reply within two business days.
+          <motion.div variants={item} className="flex flex-col gap-2 ">
+            <h1 className="text-heading text-3xl">Welcome back.</h1>
+            <p className="text-subtle text-sm max-w-4/5">
+              Sign in to continue building something amazing.
             </p>
           </motion.div>
 
@@ -83,9 +94,9 @@ const Login = () => {
         </motion.form>
 
         <motion.p
-          initial={{ opacity: 0 , y:20}}
-          animate={{ opacity: 1 ,y:0}}
-          transition={{ delay: 2.75}}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.75 }}
           className="text-sm text-subtle gap-1 flex "
         >
           don't have an account?

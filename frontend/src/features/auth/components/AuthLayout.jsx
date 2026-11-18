@@ -24,7 +24,7 @@ const item = {
   },
 };
 
-const AuthLayout = ({ children }) => {
+const AuthLayout = ({ children,data }) => {
   return (
     <main className="h-screen w-full flex relative items-center p-0 overflow-hidden">
       <section className="h-screen w-full bg-background items-center p-5 flex relative overflow-hidden">
@@ -41,19 +41,18 @@ const AuthLayout = ({ children }) => {
                   variants={item}
                   className="text-heading font-semibold text-5xl tracking-tight"
                 >
-                  Build your future.
+                  {data.leftSectionMainText}
                 </motion.h2>
                 <motion.h4
                   variants={item}
                   className="text-subtle font-semibold tracking-tight"
                 >
-                  Share what you're working on. We'll turn the essentials
-                  into a clear scope and a practical first move.
+                  {data.leftSectionSubText}
                 </motion.h4>
               </div>
 
               <div className="grid grid-flow-col grid-cols-3 gap-4">
-                {cardArr.map((card, idx) => (
+                {data.cardArr.map((card, idx) => (
                   <motion.div key={card.text} variants={item}>
                     <AuthCards
                       number={idx + 1}
