@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { addUser } from "../state/authSlice";
+import { useNavigate } from "react-router";
 
 export let useAuth = () => {
   let {
@@ -10,6 +11,7 @@ export let useAuth = () => {
     formState: { errors },
   } = useForm();
   let dispatch = useDispatch();
+  let navigate = useNavigate();
 
   const onLoginSubmit = async (data) => {
     console.log(data);
@@ -28,5 +30,6 @@ export let useAuth = () => {
     onLoginSubmit,
     onRegisterSubmit,
     reset,
+    navigate,
   };
 };
