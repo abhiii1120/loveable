@@ -304,26 +304,26 @@ export async function logout(req: Request, res: Response): Promise<void> {
 
 /**
  * Returns the current authenticated user profile.
- * 
+ *
  * @route GET /api/auth/me
  * @param req - Incoming request with authenticated user attached.
  * @param res - Express response.
  */
-export async function me(req:Request,res:Response):Promise<void>{
-  if(!req.user){
+export async function me(req: Request, res: Response): Promise<void> {
+  if (!req.user) {
     throw new UnauthorizedError("Unauthenticated user");
   }
 
   const user = await findUserById(req.user.id);
-  if(!user){
+  if (!user) {
     throw new UnauthorizedError("User not found");
   }
 
-  BuildSuccessResponse(res,"UserInfo fetched successfully",{
-    user:{
-      id:user._id.toString(),
-      name:user.name,
-      email:user.email,
-    }
-  })
+  BuildSuccessResponse(res, "UserInfo fetched successfully", {
+    UserData: {
+      id: user._id.toString(),
+      name: user.name,
+      email: user.email,
+    },
+  });
 }
