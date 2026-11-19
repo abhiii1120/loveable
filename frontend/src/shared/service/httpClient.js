@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const REFRESH_URL = "/auth/refresh";
+const REFRESH_URL = "/auth/refresh-token";
 
 let refreshPromise = null;
 
@@ -85,7 +85,7 @@ httpClient.interceptors.request.use((config) => {
 /**
  * Catch 401 error and recover
  */
-httpClient.interceptors.request.use(
+httpClient.interceptors.response.use(
   // successful response pass through untouched.
   (response) => response,
   // runs whenever a request fails.

@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { addUser } from "../state/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { register as registerThunk, login as loginThunk } from "../state/authSlice";
 import { useNavigate } from "react-router";
 
 export let useAuth = () => {
@@ -12,15 +12,20 @@ export let useAuth = () => {
   } = useForm();
   let dispatch = useDispatch();
   let navigate = useNavigate();
+  const {isloading,error,user} = useSelector((state) => state.auth);
 
   const onLoginSubmit = async (data) => {
-    console.log(data);
-    dispatch(addUser(data))
+    const result = await dispatch(loginThunk(data));
+    if(loginThunk.fulfilled.match(result)){
+      navigate("/projects");
+    }
   };
 
   const onRegisterSubmit = async (data) => {
-    console.log(data);
-    dispatch(addUser(data));
+    const result = await dispatch(registerThunk(data));
+    if(registerThunk.fulfilled.match(result)){
+      navigate("/projects");
+    }
   };
 
   return {
@@ -31,5 +36,8 @@ export let useAuth = () => {
     onRegisterSubmit,
     reset,
     navigate,
+    isloading,
+    error,
+    user
   };
 };
