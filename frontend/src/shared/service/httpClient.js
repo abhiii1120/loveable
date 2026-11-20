@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const REFRESH_URL = "/auth/refresh-token";
+const REFRESH_URL = "/api/auth/refresh-token";
 
 let refreshPromise = null;
 
@@ -13,7 +13,7 @@ let refreshPromise = null;
 let accessToken = null;
 
 export const httpClient = axios.create({
-  baseURL: "/api",
+  baseURL: "/",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -71,11 +71,14 @@ function queueRefresh() {
  * attach the token to outgoing requests
  * before any request leaves, this runs.
  * it copies the config, and if we have a token in memory, it stamps Authorization: Bearer <token> onto the request headers.
- * in simple words if we have token then attach it.
+ * in simple words if we have token then attach it. 
+ * Unless the request explicitly passes { skipAuth: true }.
  */
 httpClient.interceptors.request.use((config) => {
   const nextConfig = { ...config };
-  if (accessToken) {
+
+  // Only attach the token if we have one AND the request hasn't opted out.
+  if (accessToken && !nextConfig.skipAuth) {
     nextConfig.headers = nextConfig.headers || {};
     nextConfig.headers.Authorization = `Bearer ${accessToken}`;
   }
