@@ -19,7 +19,7 @@
   --color-text-inverted: var(--text-inverted);
 
   /* Custom background */
-  --color-app: var(--background-primary);
+  --color-background-primary: var(--background-primary);
   --color-background-secondary: var(--background-secondary);
 
   --color-border-primary: var(--border-primary);
