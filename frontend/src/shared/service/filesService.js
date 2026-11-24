@@ -17,7 +17,7 @@ function normalizePath(value) {
 }
 
 function filesQuery(paths) {
-  const query = new URLSearchParams({ filesnames: paths.join(",") });
+  const query = new URLSearchParams({ filenames: paths.join(",") });
   return `?${query.toString()}`;
 }
 
@@ -40,7 +40,7 @@ async function runtimeRequest(runtimeId, path, options = {}) {
 export const filesApi = {
   async tree(runtimeId) {
     const response = await runtimeRequest(runtimeId, "/file-tree");
-    return response.tree
+    return (response.tree || "")
       .split("\n")
       .map((path) => path.trim())
       .filter(Boolean)
@@ -48,7 +48,8 @@ export const filesApi = {
   },
 
   async read(runtimeId, paths) {
-    const response = await runtimeRequest(runtimeId, `/files${paths}`);
+    const query = filesQuery(Array.isArray(paths) ? paths : [paths]);
+    const response = await runtimeRequest(runtimeId, `/files${query}`);
     return response.files;
   },
 
@@ -56,6 +57,12 @@ export const filesApi = {
     return runtimeRequest(runtimeId, "/files", {
       method: "POST",
       data: files,
+    });
+  },
+
+  async createFolder(runtimeId, folderPath) {
+    return this.create(runtimeId, {
+      [`${normalizePath(folderPath)}/.gitkeep`]: "",
     });
   },
 
@@ -96,3 +103,5 @@ export const filesApi = {
     return Object.keys(relocatedFiles);
   },
 };
+
+export default filesApi;

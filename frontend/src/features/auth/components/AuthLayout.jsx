@@ -2,12 +2,6 @@ import { motion } from "motion/react";
 import AeroShards from "@/components/AeroShards";
 import AuthCards from "./AuthCards";
 
-let cardArr = [
-  { text: "Authentication", selected: true },
-  { text: "Chat your brief with ai", selected: false },
-  { text: "Start the build", selected: false },
-];
-
 const container = {
   hidden: {},
   show: {

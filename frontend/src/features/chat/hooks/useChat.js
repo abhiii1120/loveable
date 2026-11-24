@@ -1,5 +1,5 @@
 import { AiService } from "@/shared/service/aiService";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addLocalConversation,
@@ -15,10 +15,6 @@ import {
 } from "../state/chatThunk";
 
 const emptyMessages = [];
-
-function entityId(entity) {
-  return entity._id || entity.id;
-}
 
 function localConversation() {
   return {
@@ -37,7 +33,8 @@ function localMessage(author, content) {
   };
 }
 
-function formatTime(value) {
+export function formatTime(value) {
+  if (!value) return "";
   return new Intl.DateTimeFormat(undefined, {
     hour: "numeric",
     minute: "2-digit",

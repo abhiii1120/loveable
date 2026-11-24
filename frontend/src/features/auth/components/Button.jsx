@@ -1,5 +1,3 @@
-import React from "react";
-
 function Spinner() {
   return (
     <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">

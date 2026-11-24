@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "motion/react";
 import { useAuth } from "../hooks/useAuth";
 import AuthLayout from "../components/AuthLayout";
