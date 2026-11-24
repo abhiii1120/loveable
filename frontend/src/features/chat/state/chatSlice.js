@@ -52,13 +52,13 @@ let chatSlice = createSlice({
         state.messagesByConversation[conversationId] = messages;
       })
       .addCase(sendMessage.pending, (state, action) => {
-        const { conversationId } = action.meta.arg;
+        const { conversationId, content } = action.meta.arg || {};
         state.isSending = true;
         state.error = "";
         const conversation = state.conversations.find(
           (item) => entityId(item) === conversationId,
         );
-        if (conversation?.title === "New conversation") {
+        if (conversation?.title === "New conversation" && content) {
           conversation.title = content.slice(0, 36);
         }
       })

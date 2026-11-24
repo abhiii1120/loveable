@@ -36,7 +36,7 @@ export const fetchMessages = createAsyncThunk(
       const { data } = await AiService.listMessages(conversationId);
       return {
         conversationId,
-        messages: data.messages || response,
+        messages: data.messages || data,
       };
     } catch (error) {
       return rejectWithValue(parseError(error));
@@ -46,7 +46,7 @@ export const fetchMessages = createAsyncThunk(
 
 export const sendMessage = createAsyncThunk(
   "chat/sendMessages",
-  async ({ conversationId, content }, { rejectWithValue }) => {
+  async ({ conversationId, content }) => {
     const { data } = await AiService.sendMMessage(conversationId, content);
     const messages = data.messages || [data.message || data];
     return {

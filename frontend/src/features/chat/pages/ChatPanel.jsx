@@ -1,12 +1,18 @@
-import { useRef, useState } from "react";
-import { useChat } from "../hooks/useChat";
-import { ChevronDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useChat, formatTime } from "../hooks/useChat";
+import {
+  Bot,
+  ChevronDown,
+  MessageSquarePlus,
+  Send,
+  UserRound,
+} from "lucide-react";
 
 function entityId(entity) {
-  return entity._id || entity.id;
+  return entity?._id || entity?.id;
 }
 
-const ChatPanel = ({ projectId, modeControl }) => {
+export function ChatPanel({ projectId, modeControl }) {
   const scrollRef = useRef(null);
   const [draft, setDraft] = useState("");
 
@@ -35,12 +41,12 @@ const ChatPanel = ({ projectId, modeControl }) => {
   }
 
   return (
-   <aside className="relative flex min-h-0 flex-col border-l border-white/8 bg-[#17171d]">
+    <aside className="relative flex min-h-0 flex-col border-l border-white/8 bg-[#17171d]">
       <div className="flex h-14 shrink-0 items-center gap-2 border-b border-white/8 px-3 pr-28">
         <div className="relative min-w-0 flex-1">
           <select
             className="h-9 w-full appearance-none truncate rounded border border-white/8 bg-[#111116] pr-8 pl-3 text-xs font-bold text-zinc-300 outline-none hover:border-white/15 focus:border-cyan-500"
-            value={activeId || ''}
+            value={activeId || ""}
             onChange={(event) => selectConversation(event.target.value)}
             aria-label="Conversation"
           >
@@ -53,9 +59,9 @@ const ChatPanel = ({ projectId, modeControl }) => {
           <ChevronDown className="pointer-events-none absolute top-3 right-2.5 size-3.5 text-zinc-600" />
         </div>
         <button
-          className="grid size-9 shrink-0 place-items-center rounded border border-white/8 text-zinc-500 hover:bg-white/5 hover:text-white"
+          className="grid size-9 shrink-0 place-items-center rounded border border-white/8 text-zinc-500 hover:bg-white/5 hover:text-white cursor-pointer"
           type="button"
-          onClick={() => createConversation()} 
+          onClick={() => createConversation()}
           aria-label="New conversation"
           title="New conversation"
         >
@@ -66,7 +72,7 @@ const ChatPanel = ({ projectId, modeControl }) => {
       <div className="absolute top-2.5 right-3 z-10">{modeControl}</div>
 
       <div ref={scrollRef} className="ide-scroll min-h-0 flex-1 space-y-5 overflow-y-auto px-4 py-5">
-        {messages.length === 0 && ( 
+        {messages.length === 0 && (
           <div className="grid h-full place-items-center text-center">
             <div className="max-w-52">
               <span className="mx-auto mb-4 grid size-10 place-items-center rounded-md bg-cyan-500/10 text-cyan-400">
@@ -78,7 +84,7 @@ const ChatPanel = ({ projectId, modeControl }) => {
           </div>
         )}
 
-        {messages.map((item) => ( 
+        {messages.map((item) => (
           <article key={entityId(item)} className={`flex gap-2.5 ${item.author === 'user' ? 'flex-row-reverse' : ''}`}>
             <span className={`grid size-7 shrink-0 place-items-center rounded ${item.author === 'user' ? 'bg-zinc-700 text-zinc-300' : 'bg-cyan-500/10 text-cyan-400'}`}>
               {item.author === 'user' ? <UserRound className="size-3.5" /> : <Bot className="size-3.5" />}
@@ -93,7 +99,7 @@ const ChatPanel = ({ projectId, modeControl }) => {
         ))}
       </div>
 
-      <form className="shrink-0 border-t border-white/8 p-3" onSubmit={handleSubmit}> 
+      <form className="shrink-0 border-t border-white/8 p-3" onSubmit={handleSubmit}>
         {error && <p className="mb-2 text-[10px] font-semibold text-red-300">{error}</p>}
         <div className="rounded-md border border-white/10 bg-[#111116] p-2 focus-within:border-cyan-500/70">
           <textarea
@@ -111,10 +117,10 @@ const ChatPanel = ({ projectId, modeControl }) => {
           />
           <div className="flex items-center justify-between gap-3 px-1">
             <span className={`text-[9px] font-bold uppercase ${enabled ? 'text-emerald-500' : 'text-zinc-700'}`}>
-              {enabled ? 'Connected' : 'Offline'} 
+              {enabled ? 'Connected' : 'Offline'}
             </span>
             <button
-              className="grid size-8 place-items-center rounded bg-cyan-700 text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:opacity-40"
+              className="grid size-8 place-items-center rounded bg-cyan-700 text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
               type="submit"
               disabled={!draft.trim() || isSending}
               aria-label="Send message"
@@ -126,7 +132,7 @@ const ChatPanel = ({ projectId, modeControl }) => {
         </div>
       </form>
     </aside>
-  )
-};
+  );
+}
 
 export default ChatPanel;

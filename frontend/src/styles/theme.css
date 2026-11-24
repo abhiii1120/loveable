@@ -26,4 +26,12 @@
   --success: #22c55e;
   --warning: #f59e0b;
   --error: #ef4444;
+
+  font-family: "Manrope Variable", sans-serif;
+  color: #18181b;
+  background: #f5f6f8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

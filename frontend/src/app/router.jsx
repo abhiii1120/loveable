@@ -9,6 +9,7 @@ import Register from "../features/auth/pages/Register";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import ProjectsPage from "@/features/projects/pages/ProjectsPage";
+import WorkspacePage from "@/features/projects/pages/WorkspacePage";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { bootstrapSession } from "@/features/auth/state/authThunk";
@@ -57,8 +58,16 @@ let AppRoutes = () => {
           index: true,
           element: <ProjectsPage />,
         },
+        {
+          path: ":projectId",
+          element: <WorkspacePage />,
+        },
       ],
     },
+    {
+      path:'*',
+      element: <Navigate to={'/projects'} replace/>
+    }
   ]);
 
   return <RouterProvider router={router} />;
