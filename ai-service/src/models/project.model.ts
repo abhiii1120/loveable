@@ -4,9 +4,9 @@ const projectSchema = new mongoose.Schema(
   {
     context: {
       type: String,
-      required: true,
+      default: "",
     },
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
     },
     projectId: {
