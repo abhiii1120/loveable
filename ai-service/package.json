@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch --clear-screen=false src/server.ts",
-    "build":"npx tsc"
+    "build": "npx tsc"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +20,8 @@
     "jsonwebtoken": "^9.0.3",
     "langchain": "^1.6.6",
     "mongoose": "^9.12.1",
-    "morgan": "^1.12.1"
+    "morgan": "^1.12.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
