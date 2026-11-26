@@ -30,6 +30,9 @@ export async function consumeMessage(
     throw new Error("Message broker channel is not initialized");
   }
 
+  /**
+   * Consumes messages from the specified queue.
+   */
   await channel.assertQueue(queue, { durable: true });
   await channel.consume(
     queue,
@@ -41,4 +44,18 @@ export async function consumeMessage(
     },
     { noAck: false },
   );
+}
+
+export async function setupConsumers(){
+consumeMessage('project_created',async (message) => {
+  if(!message) return
+
+  const content = JSON.parse(message.content.toString());
+
+  await projectModel.create({
+    projectId:content.projectId,
+    userId:content.userId,
+    context:""
+  })
+})
 }
