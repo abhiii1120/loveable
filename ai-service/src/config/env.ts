@@ -7,7 +7,7 @@ function requiredEnv(
     | "MONGODB_URI"
     | "ACCESS_TOKEN_SECRET"
     | "MESSAGE_BROKER_URL"
-    // | "MISTRAL_API_KEY",
+    | "MISTRAL_API_KEY",
 ): string {
   const value = process.env[name];
 
@@ -29,5 +29,5 @@ export const env = {
   MONGODB_URI: requiredEnv("MONGODB_URI"),
   ACCESS_TOKEN_SECRET: requiredEnv("ACCESS_TOKEN_SECRET"),
   MESSAGE_BROKER_URL: requiredEnv("MESSAGE_BROKER_URL"),
-  // MISTRAL_API_KEY: requiredEnv("MISTRAL_API_KEY"),
+  MISTRAL_API_KEY: requiredEnv("MISTRAL_API_KEY"),
 };
