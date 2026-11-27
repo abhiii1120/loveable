@@ -52,14 +52,12 @@ spec:
           valueFrom:
             secretKeyRef:
               name:  message-broker
-              key: MESSAGE_BROKER_URL       
+              key: MESSAGE_BROKER_URL
+        - name: MISTRAL_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mistral
+              key: MISTRAL_API_KEY
         ports:
-        - containerPort:  5000
-          name:  my-name
-        volumeMounts:
-        - mountPath: /data
-          name: data
-      volumes:
-        - name: data
-          emptyDir: {}
-      restartPolicy: Always
+        - containerPort:  3001
+          name: ai-service-port
